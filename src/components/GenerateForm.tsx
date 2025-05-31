@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import type {FC} from 'react';
 
@@ -13,18 +13,18 @@ type GenerateFormProps = {
 const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, setTextInput, textInput}) => {
    const [titleLength, setTitleLength] = useState<string>("medium");
    const [error, setError] = useState<string | null>(null);
+   const [clickableColor, setClickableColor] = useState<string | null>('transparent');
 
 
    const handleSubmit = async () => {
       if (!textInput.trim()) {
-         setError("Please enter your text before generating.");
+         setError("Please enter your text before generating");
          return;
-      } else if (textInput.trim().length < 80) {
+      } else if (textInput.trim().length < 100) {
          setError("The text must be more than 30");
          return;
       }
       setError(null);
-
 
       try {
          const res = await axios.post("/api/response", {
@@ -37,24 +37,50 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
          setTitleResult(parsed);
          setIsGenerated(true);
       } catch (error) {
-         console.error("Ошибка при запросе:", error);
+         console.error("Ошибка при генерации:", error);
       }
    };
+
+   useEffect(() => {
+      if (textInput) {
+         setClickableColor('[#7974d0]');
+      } else {
+         setClickableColor('transparent');
+      }
+   }, [textInput]);
 
    return (
       <div className="flex flex-col w-1/3 h-full">
          <div className="flex flex-col items-center gap-3 w-full h-full">
             <div
-               className="flex flex-col items-center justify-center w-full h-1/2 p-3 outline-1 outline-dashed outline-[#89B4FA] rounded-t-2xl rounded-b-sm hover:outline-solid hover:shadow-[0_0_7px_rgba(137,180,250,1)] transition-all">
+               className="flex flex-col items-center justify-center w-full h-1/2 p-3 outline-1 outline-dashed outline-[#89B4FA] rounded-t-2xl rounded-b-sm hover:outline-solid hover:shadow-[0_0_7px_rgba(137,180,250,1)] transition-all"
+            >
                <label
                   htmlFor="file-upload"
-                  className="flex items-center justify-center px-3 py-1 text-[#89B4FA] rounded cursor-pointer hover:drop-shadow-[0_0_7px_rgba(137,180,250,1)] transition-all text-center"
+                  className="flex items-center justify-center px-3 py-1 text-[#89B4FA] rounded cursor-pointer text-center"
                >
-                  <img src='upload.svg' alt="Upload icon" className="w-32 h-32 opacity-50"/>
+                  {!textInput ? (
+                     <div className="flex flex-col items-center justify-center">
+                        <img
+                           src='upload.svg' alt="Upload icon"
+                           className="w-32 h-32 opacity-50 hover:drop-shadow-[0_0_7px_rgba(137,180,250,1)] transition-all "
+                        />
+                        <p className="text-[#89B4FA]/50 text-sm">Upload your file:</p>
+                        <p className="text-[#89B4FA]/50 text-sm">&#39;.txt, .docx&#39;</p>
+                     </div>
+                  ) : (
+                     <div className="flex flex-col items-center justify-center gap-3">
+                        <p>Yey, you ready to generate :)</p>
+                        <button
+                           onClick={() => setTextInput(null)}
+                           className="border-1 rounded-3xl px-4 py-2 hover:drop-shadow-[0_0_7px_rgba(137,180,250,1)] transition-all hover:bg-[#89B4FA] hover:text-white hover:border-[#89B4FA]"
+                        >
+                           Clear
+                        </button>
+                     </div>
+                  )}
                </label>
 
-               <p className="text-[#89B4FA]/50 text-sm">Upload your file:</p>
-               <p className="text-[#89B4FA]/50 text-sm">&#39;.txt, .docx&#39;</p>
 
                <input
                   id="file-upload"
@@ -104,8 +130,8 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
                </select>
                <button
                   onClick={handleSubmit}
-                  className="bg-[#7974d0] w-1/2 self-end min-h-[2.5rem]
-                             rounded-sm rounded-br-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)]"
+                  className={`bg-${clickableColor} border-1 border-[#7974d0] w-1/2 self-end min-h-[2.5rem]
+                     rounded-sm rounded-br-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)]`}
                >
                   Generate!
                </button>
