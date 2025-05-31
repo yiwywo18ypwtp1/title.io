@@ -46,9 +46,33 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
          <div className="flex flex-col items-center gap-3 w-full h-full">
             <div
                className="flex flex-col items-center justify-center w-full h-1/2 p-3 outline-1 outline-dashed outline-[#89B4FA] rounded-t-2xl rounded-b-sm hover:outline-solid hover:shadow-[0_0_7px_rgba(137,180,250,1)] transition-all">
-               <img src='upload.svg' alt="Upload icon" className="w-32 h-32 opacity-50"/>
+               <label
+                  htmlFor="file-upload"
+                  className="flex items-center justify-center px-3 py-1 text-[#89B4FA] rounded cursor-pointer hover:drop-shadow-[0_0_7px_rgba(137,180,250,1)] transition-all text-center"
+               >
+                  <img src='upload.svg' alt="Upload icon" className="w-32 h-32 opacity-50"/>
+               </label>
+
                <p className="text-[#89B4FA]/50 text-sm">Upload your file:</p>
-               <p className="text-[#89B4FA]/50 text-sm">'.txt, .docx'</p>
+               <p className="text-[#89B4FA]/50 text-sm">&#39;.txt, .docx&#39;</p>
+
+               <input
+                  id="file-upload"
+                  type="file"
+                  accept=".txt"
+                  onChange={(e) => {
+                     const file = e.target.files?.[0];
+                     if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                           const text = event.target?.result as string;
+                           setTextInput(text);
+                        };
+                        reader.readAsText(file, "UTF-8");
+                     }
+                  }}
+                  className="hidden"
+               />
             </div>
 
             <p className="text-[#89B4FA] text-m">or</p>
