@@ -45,3 +45,21 @@ body {
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background-color: rgba(137, 180, 250, 0.7);
 }
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-bg {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(99, 102, 241, 0.3));
+  background-size: 400% 400%;
+  animation: gradientShift 10s ease infinite;
+}
