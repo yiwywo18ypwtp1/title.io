@@ -25,7 +25,7 @@ const Result: FC<Props> = ({titleResult, textInput, setTitleResult}) => {
    };
 
    return (
-      <div className="flex flex-col items-center justify-center gap-3 w-full h-full">
+      <div className="main justify-center gap-3 w-full h-full">
          <AnimatePresence mode="wait">
             <motion.div
                key={JSON.stringify(titleResult)}
@@ -50,7 +50,7 @@ const Result: FC<Props> = ({titleResult, textInput, setTitleResult}) => {
 
          <button
             onClick={regenerateTitles}
-            className="bg-[#7974d0] w-1/6 rounded-4xl h-15 cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)] flex flex-row items-center justify-center gap-5"
+            className="bg-[#7974d0] w-1/6 rounded-4xl h-15 cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)] flex flex-row items-center justify-center"
          >
             <img src='reload.svg' alt="Upload icon" className="w-7.5 opacity-80 drop-shadow-[0_0_5px_rgba(255,255,255,1)]"/>
             <p className="text-xl">Regenerate</p>

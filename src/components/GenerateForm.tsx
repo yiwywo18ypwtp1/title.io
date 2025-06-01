@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import axios from "axios";
 import type {FC} from 'react';
 
@@ -13,11 +13,10 @@ type GenerateFormProps = {
 const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, setTextInput, textInput}) => {
    const [titleLength, setTitleLength] = useState<string>("medium");
    const [error, setError] = useState<string | null>(null);
-   const [clickableColor, setClickableColor] = useState<string | null>('transparent');
 
 
    const handleSubmit = async () => {
-      if (!textInput.trim()) {
+      if (!textInput) {
          setError("Please enter your text before generating");
          return;
       } else if (textInput.trim().length < 100) {
@@ -40,14 +39,6 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
          console.error("Ошибка при генерации:", error);
       }
    };
-
-   useEffect(() => {
-      if (textInput) {
-         setClickableColor('[#7974d0]');
-      } else {
-         setClickableColor('transparent');
-      }
-   }, [textInput]);
 
    return (
       <div className="flex flex-col w-1/3 h-full">
@@ -122,7 +113,7 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
                <select
                   value={titleLength}
                   onChange={(e) => setTitleLength(e.target.value)}
-                  className="border-1 border-[#7974d0] w-1/2 self-end min-h-[2.5rem] rounded-sm rounded-bl-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-center focus:outline-none"
+                  className="border-1 border-[#7974d0] w-1/2 self-end min-h-[2.5rem] rounded-sm rounded-bl-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] hover:text-shadow-[0_0_5px_rgb(255_255_255/_1)] text-center focus:outline-none"
                >
                   <option value="short">Short</option>
                   <option value="medium">Medium</option>
@@ -130,8 +121,8 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
                </select>
                <button
                   onClick={handleSubmit}
-                  className={`bg-${clickableColor} border-1 border-[#7974d0] w-1/2 self-end min-h-[2.5rem]
-                     rounded-sm rounded-br-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)]`}
+                  className="bg-[#7974d0] w-1/2 self-end min-h-[2.5rem]
+                     rounded-sm rounded-br-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)] hover:text-shadow-none"
                >
                   Generate!
                </button>

@@ -63,3 +63,10 @@ body {
   background-size: 400% 400%;
   animation: gradientShift 10s ease infinite;
 }
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100dvh;
+}

@@ -7,10 +7,10 @@ export default function History() {
    return (
       <>
          <Head>
-            <title>title.io — my history</title>
+            <title>title.io | My history</title>
             <link rel="icon" href="/logo.ico"/>
          </Head>
-         <main className="flex flex-col items-center h-screen bg-gradient-to-br from-indigo-400/20 to-purple-400/20">
+         <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20">
             <Header/>
 
             <div className="flex flex-col justify-center items-center h-full">
