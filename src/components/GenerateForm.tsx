@@ -7,7 +7,7 @@ type GenerateFormProps = {
    setIsGenerated: (val: boolean) => void;
    setTitleResult: (titles: string[]) => void;
    textInput: string;
-   setTextInput: (textInput: any) => void;
+   setTextInput: (textInput: string) => void;
 };
 
 const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, setTextInput, textInput}) => {
