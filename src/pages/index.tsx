@@ -12,7 +12,6 @@ export default function Home() {
 
    const [textInput, setTextInput] = useState<string>("");
 
-
    return (
       <>
          <Head>
