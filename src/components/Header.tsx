@@ -1,6 +1,8 @@
 import React from 'react';
 import type {FC} from 'react';
 import {useRouter} from 'next/router'
+import {useUser} from '@/contexts/Context';
+import axios from "axios";
 
 
 type HeaderProps = {
@@ -8,6 +10,7 @@ type HeaderProps = {
 };
 
 const Header: FC<HeaderProps> = ({onReset}) => {
+   const {user, setUser} = useUser();
    const router = useRouter()
 
 
@@ -17,6 +20,15 @@ const Header: FC<HeaderProps> = ({onReset}) => {
       } else {
          router.push('/')
       }
+   }
+
+   const handleLogout = async () => {
+      await axios
+         .post("http://localhost:3001/api/users/logout", {}, {
+            withCredentials: true
+         });
+
+      setUser(null);
    }
 
    return (
@@ -36,19 +48,37 @@ const Header: FC<HeaderProps> = ({onReset}) => {
          </h1>
 
          <div className="flex flex-row gap-1">
-            <a
-               className="text-shadow-[0_0_10px_rgb(255_255_255_/1)] cursor-pointer hover:text-shadow-none transition-all"
-               onClick={() => router.push("/signup")}
-            >
-               Sign up
-            </a>
-            <p className="text-shadow-[0_0_10px_rgb(255_255_255_/1)]">|</p>
-            <a
-               className="text-shadow-[0_0_10px_rgb(255_255_255_/1)] cursor-pointer hover:text-shadow-none transition-all"
-               onClick={() => router.push("/login")}
-            >
-               Log in
-            </a>
+            {user ? (
+               <>
+                  <h1 className="text-shadow-[0_0_10px_rgb(255_255_255_/1)]">Hi, {user.username}!</h1>
+                  <p className="text-shadow-[0_0_10px_rgb(255_255_255_/1)]">|</p>
+                  <div className="flex flex-row gap-2 drop-shadow-[0_0_10px_rgb(255_255_255_/1)] cursor-pointer hover:drop-shadow-none transition-all">
+                     <a
+                        onClick={handleLogout}
+                     >
+                        Log out
+                     </a>
+                     <img src='logout.svg' alt="Upload icon" className="w-5 opacity-80 "/>
+                  </div>
+               </>
+            ) : (
+               <>
+                  <a
+                     className="text-shadow-[0_0_10px_rgb(255_255_255_/1)] cursor-pointer hover:text-shadow-none transition-all"
+                     onClick={() => router.push("/signup")}
+                  >
+                     Sign up
+                  </a>
+                  <p className="text-shadow-[0_0_10px_rgb(255_255_255_/1)]">|</p>
+                  <a
+                     className="text-shadow-[0_0_10px_rgb(255_255_255_/1)] cursor-pointer hover:text-shadow-none transition-all"
+                     onClick={() => router.push("/login")}
+                  >
+                     Log in
+                  </a>
+               </>
+            )}
+
          </div>
       </header>
    );
