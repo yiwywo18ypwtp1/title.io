@@ -7,7 +7,7 @@ import axios from "axios";
 import {AnimatePresence, motion} from "framer-motion";
 
 
-export default function Signup() {
+export default function Login() {
    const {setUser} = useUser();
    const router = useRouter();
 
