@@ -20,7 +20,7 @@ export default function Signup() {
       if (username && password) {
          try {
             await axios.post(
-               "http://localhost:5000/api/users/login", {
+               `${process.env.NEXT_PUBLIC_API_URL}/api/users/login`, {
                   username, password
                },
                {
@@ -29,7 +29,7 @@ export default function Signup() {
             );
 
             const res = await axios
-               .get("http://localhost:5000/api/users/me", {
+               .get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
                   withCredentials: true,
                });
 

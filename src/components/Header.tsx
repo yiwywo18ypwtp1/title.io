@@ -24,7 +24,7 @@ const Header: FC<HeaderProps> = ({onReset}) => {
 
    const handleLogout = async () => {
       await axios
-         .post("http://localhost:5000/api/users/logout", {}, {
+         .post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/logout`, {}, {
             withCredentials: true
          });
 
