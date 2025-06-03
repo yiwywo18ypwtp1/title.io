@@ -19,7 +19,7 @@ export default function Home() {
             <link rel="icon" href="/logo.ico"/>
          </Head>
 
-         <main className="flex flex-col items-center h-screen bg-gradient-to-br from-indigo-400/20 to-purple-400/20 font-audiolink">
+         <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20 font-audiolink">
             <Header onReset={() => setIsGenerated(false)}/>
 
             <div className="flex flex-col h-full w-full justify-center">
