@@ -1,16 +1,17 @@
+import dotenv from "dotenv";
+dotenv.config({ path: '../.env' });
 import express from "express";
 import {getDB} from "../db.js";
+console.log("getDB on module load:", getDB);
+
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
 import { ObjectId } from "mongodb";
 
 
-dotenv.config({ path: '../.env' });
-
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
-
+console.log("users.js module loaded, JWT_SECRET =", process.env.JWT_SECRET);
 
 function authenticateToken(req, res, next) {
    const token = req.cookies.token;
@@ -51,7 +52,8 @@ router.get("/me", authenticateToken, async (req, res) => {
 
 router.post("/signup", async (req, res) => {
    try {
-      const db = getDB();
+      const db = await getDB();
+      console.log("DB in /signup handler:", db);
       const {username, email, password} = req.body;
 
       const hashedPassword = await bcrypt.hash(password, 10);
@@ -72,8 +74,9 @@ router.post("/signup", async (req, res) => {
 
 
 router.post("/login", async (req, res) => {
+   console.log(JWT_SECRET);
    try {
-      const db = getDB();
+      const db = await getDB();
       const {username, password} = req.body;
 
       const user = await db.collection("titleio_users").findOne({username});

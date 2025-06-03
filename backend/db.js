@@ -8,7 +8,9 @@ let db;
 export const connectToDB = async () => {
    try {
       await client.connect();
+      console.log("MongoClient connected");
       db = client.db("titleiodb");
+      console.log("DB instance assigned");
       console.log("✅ Connected to MongoDB");
    } catch (err) {
       console.error("❌ MongoDB connection error:", err);
