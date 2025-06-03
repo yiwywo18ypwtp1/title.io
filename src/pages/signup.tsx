@@ -19,7 +19,7 @@ export default function Signup() {
       if (username && email && password) {
          try {
             await axios
-               .post("http://localhost:5000/api/users/signup", {
+               .post(`${process.env.NEXT_PUBLIC_API_URL}/api/users/signup`, {
                   username,
                   email,
                   password
