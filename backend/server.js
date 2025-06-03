@@ -1,11 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config({ path: '../.env' });
 import express from "express";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 import usersRoutes from "./routes/users.js";
-import dotenv from "dotenv";
-import { connectToDB } from "./db.js";
 
-dotenv.config({ path: '../.env' });
+import { connectToDB } from "./db.js";
 
 const app = express();
 
@@ -30,9 +30,10 @@ app.get("/api/hello", (req, res) => {
 
 async function startServer() {
    try {
-      await connectToDB();  // ждем подключения к БД
+      await connectToDB();
+      console.log("DB should be connected before server start");
       app.listen(PORT, () => {
-         console.log(`Server running on port ${PORT}`);
+         console.log("Server running on port", PORT);
       });
    } catch (err) {
       console.error("Failed to connect to DB", err);
