@@ -20,7 +20,7 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
          setError("Please enter your text before generating");
          return;
       } else if (textInput.trim().length < 100) {
-         setError("The text must be more than 30");
+         setError("The text must be more than 100");
          return;
       }
       setError(null);
