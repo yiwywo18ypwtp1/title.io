@@ -25,7 +25,7 @@ const Result: FC<Props> = ({titleResult, textInput, setTitleResult}) => {
    };
 
    return (
-      <div className="main justify-center gap-3 w-full h-full">
+      <div className="flex flex-col items-center justify-center gap-3 w-full h-full">
          <AnimatePresence mode="wait">
             <motion.div
                key={JSON.stringify(titleResult)}
