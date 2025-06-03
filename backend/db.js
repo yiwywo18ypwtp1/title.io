@@ -17,6 +17,7 @@ export const connectToDB = async () => {
 
 export function getDB() {
    if (!db) {
+      console.error("getDB called but DB is not connected yet");
       throw new Error("DB not connected");
    }
    return db;
