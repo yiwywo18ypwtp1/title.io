@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from "axios";
 import type {FC} from 'react';
 import {AnimatePresence, motion} from "framer-motion";
@@ -11,6 +11,8 @@ type Props = {
 };
 
 const Result: FC<Props> = ({titleResult, textInput, setTitleResult}) => {
+   const [copied, setCopied] = useState<number | null>(null);
+
    const regenerateTitles = async () => {
       try {
          const res = await axios.post("/api/response", {
