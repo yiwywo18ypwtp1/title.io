@@ -12,6 +12,7 @@ export default function Signup() {
    const [username, setUsername] = useState<string | null>(null);
    const [password, setPassword] = useState<string | null>(null);
    const [email, setEmail] = useState<string | null>(null);
+   const [credentialError, setCredentialError] = useState<string | null>(null);
 
 
    const handleRegister = async (e: { preventDefault: () => void; }) => {
@@ -31,9 +32,20 @@ export default function Signup() {
                )
 
          } catch (error) {
+            if (axios.isAxiosError(error)) {
+               if (error.response?.status === 409) {
+                  setCredentialError('User with this username or email already exists');
+               } else {
+                  console.error("Server error:", error.message);
+               }
+            } else {
+               console.error("Unexpected error:", error);
+            }
+
             console.log(error)
          }
       } else {
+         setCredentialError('Please enter username and password');
          console.log('Fill all fields, please');
       }
    }
@@ -54,7 +66,7 @@ export default function Signup() {
                   animate={{opacity: 1, y: 0}}
                   exit={{opacity: 0, y: 20}}
                   transition={{duration: 0.5, ease: "easeOut"}}
-                  className="flex flex-col justify-between items-center h-1/2 w-[25%] p-10 rounded-3xl border-1 border-[#89B4FA] bg-[#1E1E2E]/35 shadow-[0_0_15px_rgba(121,116,208,1)]"
+                  className="flex flex-col justify-between items-center h-[60%] w-[25%] p-10 rounded-3xl border-1 border-[#89B4FA] bg-[#1E1E2E]/35 shadow-[0_0_15px_rgba(121,116,208,1)]"
                >
                   <div className="flex flex-col items-center gap-5 w-full">
                      <h1 className="text-[#89B4FA] text-3xl text-shadow-[0_0_5px_rgba(121,116,208,1)]">Sign up</h1>
@@ -89,6 +101,10 @@ export default function Signup() {
                         }}
                      />
                   </div>
+
+                  {credentialError && (
+                     <p className="animate-pulse text-red-400 text-center">{credentialError}</p>
+                  )}
 
                   <div className="flex row items-center gap-3 w-full">
                      <button

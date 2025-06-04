@@ -97,6 +97,7 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
             <textarea
                onChange={(e) => {
                   setTextInput(e.target.value);
+                  setError(null);
                }}
                className="custom-scroll box-border w-full h-1/2 bg-violet-300/30 py-3 px-4 rounded-sm resize-none text-[#89B4FA] placeholder:text-center focus:outline-1 outline-[#89B4FA] focus:shadow-[0_0_7px_rgba(137,180,250,1)] focus:placeholder-transparent transition-all"
                rows={1}

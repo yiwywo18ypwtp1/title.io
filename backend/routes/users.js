@@ -67,7 +67,11 @@ router.post("/signup", async (req, res) => {
       console.log(`user registered: ${result}`);
       res.status(201).json(result);
    } catch (err) {
-      console.error(err);
+      if (err.code === 11000) {
+         const duplicateField = Object.keys(err.keyPattern)[0];
+         return res.status(409).json({ error: `${duplicateField} already exists` });
+      }
+
       res.status(500).json({error: "Failed to insert user"});
    }
 });
