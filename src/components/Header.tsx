@@ -7,15 +7,17 @@ import axios from "axios";
 
 type HeaderProps = {
    onReset?: () => void;
+   resetTextInput?: () => void;
 };
 
-const Header: FC<HeaderProps> = ({onReset}) => {
+const Header: FC<HeaderProps> = ({onReset, resetTextInput}) => {
    const {user, setUser} = useUser();
    const router = useRouter()
 
 
    const handleReset = () => {
-      if (onReset) {
+      if (onReset && resetTextInput) {
+         resetTextInput();
          onReset();
       } else {
          router.push('/')

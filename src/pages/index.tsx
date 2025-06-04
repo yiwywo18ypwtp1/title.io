@@ -10,7 +10,7 @@ export default function Home() {
    const [isGenerated, setIsGenerated] = useState(false);
    const [titleResult, setTitleResult] = useState<string[]>([]);
 
-   const [textInput, setTextInput] = useState<string>("");
+   const [textInput, setTextInput] = useState<string | null>(null);
 
    return (
       <>
@@ -20,7 +20,10 @@ export default function Home() {
          </Head>
 
          <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20 font-audiolink">
-            <Header onReset={() => setIsGenerated(false)}/>
+            <Header
+               onReset={() => setIsGenerated(false)}
+               resetTextInput={() => setTextInput(null)}
+            />
 
             <div className="flex flex-col h-full w-full justify-center">
                <AnimatePresence mode="wait">

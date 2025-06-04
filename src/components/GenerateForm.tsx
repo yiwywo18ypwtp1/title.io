@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import type {FC} from 'react';
 
@@ -7,13 +7,14 @@ type GenerateFormProps = {
    setIsGenerated: (val: boolean) => void;
    setTitleResult: (titles: string[]) => void;
    textInput: string;
-   setTextInput: (textInput: string) => void;
+   setTextInput: (textInput: string | null) => void;
 };
 
 const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, setTextInput, textInput}) => {
    const [titleLength, setTitleLength] = useState<string>("medium");
    const [error, setError] = useState<string | null>(null);
-
+   const [charCount, setCharCount] = useState<number>(0);
+   const [file, setFile] = useState<File | undefined | null>(null);
 
    const handleSubmit = async () => {
       if (!textInput) {
@@ -40,6 +41,14 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
       }
    };
 
+   useEffect(() => {
+      if (textInput) {
+         setCharCount(textInput.length);
+      } else {
+         setCharCount(0)
+      }
+   }, [textInput])
+
    return (
       <div className="flex flex-col w-1/3 h-full">
          <div className="flex flex-col items-center gap-3 w-full h-full">
@@ -50,20 +59,23 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
                   htmlFor="file-upload"
                   className="flex items-center justify-center px-3 py-1 text-[#89B4FA] rounded cursor-pointer text-center"
                >
-                  {!textInput ? (
+                  {!file ? (
                      <div className="flex flex-col items-center justify-center">
                         <img
                            src='upload.svg' alt="Upload icon"
                            className="w-32 h-32 opacity-50 hover:drop-shadow-[0_0_7px_rgba(137,180,250,1)] transition-all "
                         />
                         <p className="text-[#89B4FA]/50 text-sm">Upload your file:</p>
-                        <p className="text-[#89B4FA]/50 text-sm">&#39;.txt, .docx&#39;</p>
+                        <p className="text-[#89B4FA]/50 text-sm">&#39;.txt&#39;</p>
                      </div>
                   ) : (
                      <div className="flex flex-col items-center justify-center gap-3">
                         <p>Yey, you ready to generate :)</p>
                         <button
-                           onClick={() => setTextInput(null)}
+                           onClick={() => {
+                              setFile(null);
+                              setTextInput(null);
+                           }}
                            className="border-1 rounded-3xl px-4 py-2 hover:drop-shadow-[0_0_7px_rgba(137,180,250,1)] transition-all hover:bg-[#89B4FA] hover:text-white hover:border-[#89B4FA]"
                         >
                            Clear
@@ -78,37 +90,47 @@ const GenerateForm: FC<GenerateFormProps> = ({setIsGenerated, setTitleResult, se
                   type="file"
                   accept=".txt"
                   onChange={(e) => {
-                     const file = e.target.files?.[0];
-                     if (file) {
+                     const selectedFile = e.target.files?.[0];
+                     if (selectedFile) {
+                        setFile(selectedFile);
                         const reader = new FileReader();
                         reader.onload = (event) => {
                            const text = event.target?.result as string;
                            setTextInput(text);
                         };
-                        reader.readAsText(file, "UTF-8");
+                        reader.readAsText(selectedFile, "UTF-8");
                      }
                   }}
                   className="hidden"
                />
             </div>
 
-            <p className="text-[#89B4FA] text-m">or</p>
-
-            <textarea
-               onChange={(e) => {
-                  setTextInput(e.target.value);
-                  setError(null);
-               }}
-               className="custom-scroll box-border w-full h-1/2 bg-violet-300/30 py-3 px-4 rounded-sm resize-none text-[#89B4FA] placeholder:text-center focus:outline-1 outline-[#89B4FA] focus:shadow-[0_0_7px_rgba(137,180,250,1)] focus:placeholder-transparent transition-all"
-               rows={1}
-               placeholder="Enter your text here"
-               spellCheck={false}
-               required
-            />
-
-            {error && (
-               <p className="text-red-400 text-sm transition-opacity animate-pulse">{error}</p>
+            {error ? (
+               <p className="text-red-400 text-m transition-opacity animate-pulse">{error}</p>
+            ) : (
+               <p className="text-[#89B4FA] text-m">or</p>
             )}
+
+
+            <div className="relative w-full h-[50%]">
+              <textarea
+                 onChange={(e) => {
+                    setTextInput(e.target.value);
+                    setError(null);
+                 }}
+                 className={`custom-scroll box-border w-full h-full bg-violet-300/30 py-3 px-4 rounded-sm resize-none text-[#89B4FA] ${textInput ? 'placeholder:text-left' : 'placeholder:text-center'} focus:outline-1 outline-[#89B4FA] focus:shadow-[0_0_7px_rgba(137,180,250,1)] focus:placeholder-transparent transition-all`}
+                 rows={1}
+                 placeholder={`${textInput ? textInput : 'Enter your text here'}`}
+                 spellCheck={false}
+                 required
+              />
+
+               {charCount < 100 ?
+                  <p className="absolute bottom-1 right-2.5 text-[#89B4FA] select-none">{charCount}/100</p>
+                  :
+                  <p className="absolute bottom-1 right-2.5 text-[#89B4FA] select-none">{charCount}</p>
+               }
+            </div>
 
             <div className="flex flex-row w-full h-1/10 gap-3">
                <select
