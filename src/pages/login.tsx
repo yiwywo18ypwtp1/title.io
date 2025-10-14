@@ -26,6 +26,7 @@ export default function Login() {
                password
             });
 
+            console.log(response.data);
             localStorage.setItem("token", response.data.token);
 
             const me = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
