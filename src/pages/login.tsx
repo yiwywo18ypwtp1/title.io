@@ -1,14 +1,14 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Head from 'next/head';
 import Header from "@/components/Header";
-import {useRouter} from 'next/router'
-import {useUser} from '@/contexts/Context';
+import { useRouter } from 'next/router'
+import { useUser } from '@/contexts/Context';
 import axios from "axios";
-import {AnimatePresence, motion} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 
 export default function Login() {
-   const {setUser} = useUser();
+   const { setUser } = useUser();
    const router = useRouter();
 
    const [username, setUsername] = useState<string | null>(null);
@@ -16,26 +16,24 @@ export default function Login() {
    const [credentialError, setCredentialError] = useState<string | null>(null);
 
 
-   const handleLogin = async (e) => {
+   const handleLogin = async (e: React.FormEvent) => {
       e.preventDefault();
       if (username && password) {
          try {
-            await axios.post(
+            const response = await axios.post(
                `${process.env.NEXT_PUBLIC_API_URL}/api/users/login`, {
-                  username,
-                  password
+               username,
+               password
+            });
+
+            localStorage.setItem("token", response.data.token);
+
+            const me = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
+               headers: {
+                  Authorization: `Bearer ${response.data.token}`,
                },
-               {
-                  withCredentials: true
-               }
-            );
-
-            const res = await axios
-               .get(`${process.env.NEXT_PUBLIC_API_URL}/api/users/me`, {
-                  withCredentials: true,
-               });
-
-            setUser(res.data);
+            });
+            setUser(me.data);
 
             await router.push("/");
          } catch (error) {
@@ -61,19 +59,19 @@ export default function Login() {
       <>
          <Head>
             <title>title.io | Log in</title>
-            <link rel="icon" href="/logo.ico"/>
+            <link rel="icon" href="/logo.ico" />
          </Head>
          <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20">
-            <Header/>
+            <Header />
 
             <div className="flex flex-col justify-center items-center h-full w-full">
                <AnimatePresence mode="wait">
                   <motion.form
                      key="form"
-                     initial={{opacity: 0, y: 20}}
-                     animate={{opacity: 1, y: 0}}
-                     exit={{opacity: 0, y: 20}}
-                     transition={{duration: 0.5, ease: "easeOut"}}
+                     initial={{ opacity: 0, y: 20 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     exit={{ opacity: 0, y: 20 }}
+                     transition={{ duration: 0.5, ease: "easeOut" }}
                      className="flex flex-col justify-between items-center h-[60%] w-[25%] p-10 rounded-3xl border-1 border-[#89B4FA] bg-[#1E1E2E]/35 shadow-[0_0_15px_rgba(121,116,208,1)]"
                   >
                      <div className="flex flex-col items-center gap-5 w-full">

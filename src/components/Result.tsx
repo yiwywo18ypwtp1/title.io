@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from "axios";
-import type {FC} from 'react';
-import {AnimatePresence, motion} from "framer-motion";
+import type { FC } from 'react';
+import { AnimatePresence, motion } from "framer-motion";
 
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
    setTitleResult: (titles: string[]) => void;
 };
 
-const Result: FC<Props> = ({titleResult, textInput, setTitleResult}) => {
+const Result: FC<Props> = ({ titleResult, textInput, setTitleResult }) => {
    const [copied, setCopied] = useState<number | null>(null);
 
    const regenerateTitles = async () => {
@@ -31,10 +31,10 @@ const Result: FC<Props> = ({titleResult, textInput, setTitleResult}) => {
          <AnimatePresence mode="wait">
             <motion.div
                key={JSON.stringify(titleResult)}
-               initial={{opacity: 0, y: 0}}
-               animate={{opacity: 1, y: 20}}
-               exit={{opacity: 0, y: 0}}
-               transition={{duration: 0.5, ease: "easeOut"}}
+               initial={{ opacity: 0, y: 0 }}
+               animate={{ opacity: 1, y: 20 }}
+               exit={{ opacity: 0, y: 0 }}
+               transition={{ duration: 0.5, ease: "easeOut" }}
             >
                <ul className="flex flex-col items-center mb-10 gap-2 justify-center">
                   {titleResult.map((title, idx) => (
@@ -54,7 +54,7 @@ const Result: FC<Props> = ({titleResult, textInput, setTitleResult}) => {
             onClick={regenerateTitles}
             className="bg-[#7974d0] w-1/6 rounded-4xl h-15 cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)] flex flex-row items-center justify-center"
          >
-            <img src='reload.svg' alt="Upload icon" className="w-7.5 opacity-80 drop-shadow-[0_0_5px_rgba(255,255,255,1)]"/>
+            <img src='reload.svg' alt="Upload icon" className="w-7.5 opacity-80 drop-shadow-[0_0_5px_rgba(255,255,255,1)]" />
             <p className="text-xl">Regenerate</p>
          </button>
       </div>

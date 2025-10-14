@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config({ path: '../.env' });
 import express from "express";
-import {getDB} from "../db.js";
+import { getDB } from "../db.js";
 console.log("getDB on module load:", getDB);
 
 import jwt from "jsonwebtoken";
@@ -14,10 +14,11 @@ const JWT_SECRET = process.env.JWT_SECRET;
 console.log("users.js module loaded, JWT_SECRET =", process.env.JWT_SECRET);
 
 function authenticateToken(req, res, next) {
-   const token = req.cookies.token;
+   const authHeader = req.headers["authorization"];
+   const token = authHeader && authHeader.split(" ")[1];
 
    if (!token) {
-      return res.status(401).json({ error: "No token" });
+      return res.status(401).json({ error: "No token provided" });
    }
 
    try {
@@ -37,24 +38,37 @@ router.get("/all", async (req, res) => {
       res.json(users);
    } catch (err) {
       console.error(err);
-      res.status(500).json({error: "Something went wrong"});
+      res.status(500).json({ error: "Something went wrong" });
    }
 });
 
 
 router.get("/me", authenticateToken, async (req, res) => {
-   const db = getDB();
-   const user = await db.collection("titleio_users").findOne({_id: new ObjectId(req.user.userId)});
-   if (!user) return res.status(404).json({error: "User not found"});
-   res.json({username: user.username, email: user.email});
+   try {
+      const db = getDB();
+      const user = await db
+         .collection("titleio_users")
+         .findOne({ _id: new ObjectId(req.user.userId) });
+
+      if (!user) return res.status(404).json({ error: "User not found" });
+
+      res.json({ username: user.username, email: user.email });
+   } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Server error" });
+   }
 });
 
 
 router.post("/signup", async (req, res) => {
    try {
       const db = await getDB();
-      console.log("DB in /signup handler:", db);
-      const {username, email, password} = req.body;
+      const { username, email, password } = req.body;
+
+      const existingUser = await db.collection("titleio_users").findOne({ username });
+      if (existingUser) {
+         return res.status(409).json({ error: "Username already exists" });
+      }
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -64,15 +78,9 @@ router.post("/signup", async (req, res) => {
          password: hashedPassword,
       });
 
-      console.log(`user registered: ${result}`);
-      res.status(201).json(result);
+      res.status(201).json({ message: "User registered", id: result.insertedId });
    } catch (err) {
-      if (err.code === 11000) {
-         const duplicateField = Object.keys(err.keyPattern)[0];
-         return res.status(409).json({ error: `${duplicateField} already exists` });
-      }
-
-      res.status(500).json({error: "Failed to insert user"});
+      res.status(500).json({ error: "Failed to insert user" });
    }
 });
 
@@ -81,45 +89,26 @@ router.post("/login", async (req, res) => {
    console.log(JWT_SECRET);
    try {
       const db = await getDB();
-      const {username, password} = req.body;
+      const { username, password } = req.body;
 
-      const user = await db.collection("titleio_users").findOne({username});
+      const user = await db.collection("titleio_users").findOne({ username });
       if (!user) {
-         return res.status(404).json({error: "Invalid credentials"});
+         return res.status(404).json({ error: "Invalid credentials" });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-         return res.status(401).json({error: "Invalid credentials"});
+         return res.status(401).json({ error: "Invalid credentials" });
       }
 
-      const token = jwt.sign({userId: user._id}, JWT_SECRET, {expiresIn: "1h"});
+      const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: "1h" });
 
-      res.cookie("token", token, {
-         httpOnly: true,
-         secure: true,
-         sameSite: "none",
-         maxAge: 60 * 60 * 1000,
-      });
-      console.log(`user logged in: ${user} - ${token}`);
-
-      res.json({message: "Logged in"});
+      res.json({ token, message: "Logged in" });
 
    } catch (err) {
       console.error(err);
-      res.status(500).json({error: "Failed to insert user"});
+      res.status(500).json({ error: "Failed to insert user" });
    }
-})
-
-
-router.post("/logout", async (req, res) => {
-   res.clearCookie("token", {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-   });
-
-   res.json({ message: "Logged out" });
-})
+});
 
 export default router;

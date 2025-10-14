@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Head from 'next/head';
 import Header from "@/components/Header";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import axios from "axios";
-import {AnimatePresence, motion} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 
 export default function Signup() {
@@ -25,12 +25,8 @@ export default function Signup() {
                   email,
                   password
                })
-               .then(
-                  () => {
-                     router.push('/login')
-                  }
-               )
 
+            router.push('/login')
          } catch (error) {
             if (axios.isAxiosError(error)) {
                if (error.response?.status === 409) {
@@ -54,18 +50,18 @@ export default function Signup() {
       <>
          <Head>
             <title>title.io | Sign up</title>
-            <link rel="icon" href="/logo.ico"/>
+            <link rel="icon" href="/logo.ico" />
          </Head>
          <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20">
-            <Header/>
+            <Header />
 
             <div className="flex flex-col justify-center items-center h-full w-full">
                <motion.form
                   key="form"
-                  initial={{opacity: 0, y: 20}}
-                  animate={{opacity: 1, y: 0}}
-                  exit={{opacity: 0, y: 20}}
-                  transition={{duration: 0.5, ease: "easeOut"}}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                   className="flex flex-col justify-between items-center h-[60%] w-[25%] p-10 rounded-3xl border-1 border-[#89B4FA] bg-[#1E1E2E]/35 shadow-[0_0_15px_rgba(121,116,208,1)]"
                >
                   <div className="flex flex-col items-center gap-5 w-full">

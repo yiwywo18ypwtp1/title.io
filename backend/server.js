@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: './.env' });
 import express from "express";
 import cors from "cors";
-import cookieParser from 'cookie-parser';
 import usersRoutes from "./routes/users.js";
 
 import { connectToDB } from "./db.js";
@@ -15,11 +14,10 @@ app.use(cors({
       "http://127.0.0.1:3000",
       "https://www.title-io.xyz",
    ],
-   credentials: true
+   credentials: true,
 }));
 
 app.use(express.json());
-app.use(cookieParser());
 app.use("/api/users", usersRoutes);
 
 const PORT = process.env.PORT || 5000;
