@@ -1,6 +1,8 @@
-import {MongoClient} from "mongodb";
+import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+dotenv.config({ path: '../.env' });
 
-const uri = "mongodb+srv://ashashasadafda:y13rg9c0@daipivchikbot.dnlfrzo.mongodb.net/?retryWrites=true&w=majority&appName=DaiPivchikBot"; // или твой Mongo Atlas URI
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 
 let db;
