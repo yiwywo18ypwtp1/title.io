@@ -19,6 +19,10 @@
   }
 }
 
+.centred-select {
+  text-align-last: center;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -50,9 +54,11 @@ body {
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -65,8 +71,8 @@ body {
 }
 
 .main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100dvh;
 }

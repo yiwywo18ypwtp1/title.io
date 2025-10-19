@@ -6,17 +6,17 @@ import { AnimatePresence, motion } from "framer-motion";
 
 type Props = {
    titleResult: string[];
-   textInput: string;
+   textInput: string | null;
+   titleLength: string;
    setTitleResult: (titles: string[]) => void;
 };
 
-const Result: FC<Props> = ({ titleResult, textInput, setTitleResult }) => {
-   const [copied, setCopied] = useState<number | null>(null);
-
+const Result: FC<Props> = ({ titleResult, textInput, titleLength, setTitleResult }) => {
    const regenerateTitles = async () => {
       try {
-         const res = await axios.post("/api/response", {
-            prompt: `Придумай 3 заголовка к этому тексту. Максимально подходящие и medium длины. Верни результат строго в формате JSON массива. Никаких комментариев — только массив: ["...", "...", "..."]. Сам текст: ${textInput}`,
+         const res = await axios.post("/api/generateTitle", {
+            text: textInput,
+            titleLength: titleLength
          });
 
          const parsed = JSON.parse(res.data.result);
@@ -28,6 +28,10 @@ const Result: FC<Props> = ({ titleResult, textInput, setTitleResult }) => {
 
    return (
       <div className="flex flex-col items-center justify-center gap-3 w-full h-full">
+         <span className="border-1 border-[#CBA6F7] text-[#cba6f7] text-lg px-5 py-2 rounded-3xl shadow-[0_0_10px_rgb(206,166,247,0.5)]">
+            Length: {titleLength}
+         </span>
+
          <AnimatePresence mode="wait">
             <motion.div
                key={JSON.stringify(titleResult)}
@@ -52,7 +56,7 @@ const Result: FC<Props> = ({ titleResult, textInput, setTitleResult }) => {
 
          <button
             onClick={regenerateTitles}
-            className="bg-[#7974d0] w-1/6 rounded-4xl h-15 cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)] flex flex-row items-center justify-center"
+            className="bg-[#7974d0] mt-8 w-1/6 rounded-4xl h-15 cursor-pointer transition-all hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)] flex flex-row items-center justify-center"
          >
             <img src='reload.svg' alt="Upload icon" className="w-7.5 opacity-80 drop-shadow-[0_0_5px_rgba(255,255,255,1)]" />
             <p className="text-xl">Regenerate</p>
