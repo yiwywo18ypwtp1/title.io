@@ -2,7 +2,6 @@ import React from 'react';
 import type { FC } from 'react';
 import { useRouter } from 'next/router'
 import { useUser } from '@/contexts/Context';
-import axios from "axios";
 
 
 type HeaderProps = {

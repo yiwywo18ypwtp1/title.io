@@ -1,74 +1,65 @@
 import React, { useState } from "react";
-import GenerateForm from "@/components/GenerateForm";
-import Header from "../components/Header";
-import Head from 'next/head';
-import Result from "../components/Result";
-import { AnimatePresence, motion } from "framer-motion";
+import Card from '@/components/Card'
 
 
-export default function Home() {
-   const [isGenerated, setIsGenerated] = useState(false);
-   const [titleResult, setTitleResult] = useState<string[]>([]);
+const WelcomePage = () => {
+    const [hovered, setHovered] = useState(false);
 
-   const [textInput, setTextInput] = useState<string | null>(null);
-   const [titleLength, setTitleLength] = useState<string>("");
+    return (
+        <>
+            <main className="main bg-img overflow-visible">
+                <header className="w-full py-4 px-6 flex flex-row items-center justify-between">
+                    <div className="flex flex-row items-center gap-5">
+                        <img src="logo-wh.svg" alt="logo" className="h-8 drop-shadow-[0_0_10px_rgba(255,255,255,1)]" />
+                        <h1 className="text-4xl txt-sh-white">title.io</h1>
+                    </div>
 
-   return (
-      <>
-         <Head>
-            <title>title.io</title>
-            <link rel="icon" href="/logo.ico" />
-         </Head>
+                    <div className="flex flex-row gap-3 items-center">
+                        <button className="text-lg rounded-full py-2 w-28 white-href hover:cursor-pointer">Log in</button>
+                        <button className="text-lg border-1 rounded-full py-2 w-28 purple-br purple-sh purple-btn-empty">Sign up</button>
+                    </div>
+                </header>
 
-         <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20 font-audiolink">
-            <Header
-               onReset={() => {
-                  setIsGenerated(false);
-                  setTitleLength("");
-               }}
-               resetTextInput={() => setTextInput(null)}
-            />
+                <div className="flex flex-col justify-between items-center gap-10 w-full mt-25 overflow-visible">
+                    <div className="flex flex-col items-center brightness-125">
+                        <h1 className="text-6xl pink-txt-sh">- Welcome to -</h1>
+                        <h1 className="text-9xl pink-txt-sh">Title.io</h1>
+                    </div>
 
-            <div className="flex flex-col h-full w-full justify-center">
-               <AnimatePresence mode="wait">
-                  {!isGenerated ? (
-                     <motion.div
-                        key="form"
-                        className="w-full h-[75%] flex flex-col items-center"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                     >
-                        <GenerateForm
-                           textInput={textInput}
-                           titleLength={titleLength}
-                           setTitleLength={setTitleLength}
-                           setIsGenerated={setIsGenerated}
-                           setTitleResult={setTitleResult}
-                           setTextInput={setTextInput}
+                    <h1 className="text-3xl pink-txt-sh brightness-125">AI-powered tool to enhance your texts</h1>
+
+                    <div className="flex flex-row items-start gap-14 mt-6 overflow-visible">
+                        <Card
+                            title="Title generator"
+                            text="
+                                Craft bold, catchy titles powered by AI.
+                                Designed to grab attention and spark interest instantly.
+                            "
+                            link="/title-generator"
                         />
-                     </motion.div>
-                  ) : (
-                     <motion.div
-                        key="result"
-                        className="w-full h-[75%] flex flex-col items-center"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        transition={{ duration: 0.5, ease: "easeOut" }}
-                     >
-                        <Result
-                           titleResult={titleResult}
-                           textInput={textInput}
-                           titleLength={titleLength}
-                           setTitleResult={setTitleResult}
+
+                        <Card
+                            title="Length changer"
+                            text="
+                                Instantly make your text longer or shorter —
+                                smart, natural, and always on point.
+                            "
+                            link="/title-generator"
                         />
-                     </motion.div>
-                  )}
-               </AnimatePresence>
-            </div>
-         </main>
-      </>
-   );
+
+                        <Card
+                            title="Text Fixer"
+                            text="
+                                Improve your text in one click —
+                                fix grammar, flow, and clarity while keeping your style intact.
+                            "
+                            link="/title-generator"
+                        />
+                    </div>
+                </div>
+            </main>
+        </>
+    )
 }
+
+export default WelcomePage;
