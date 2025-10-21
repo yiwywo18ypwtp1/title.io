@@ -18,9 +18,9 @@ const Header: FC<HeaderProps> = ({ onReset, resetTextInput }) => {
       if (onReset && resetTextInput) {
          resetTextInput();
          onReset();
-      } else {
-         router.push('/')
       }
+
+      router.push('/')
    }
 
    const handleLogout = async () => {
@@ -29,7 +29,7 @@ const Header: FC<HeaderProps> = ({ onReset, resetTextInput }) => {
    }
 
    return (
-      <header className="flex justify-between items-center h-15 bg-[#7974d0] text-white mb-0 top-0 sticky px-5 w-full shadow-[0_0_10px_rgba(121,116,208,1)]">
+      <header className="flex justify-between items-center h-15 bg-[#7974d0] text-white mb-0 top-0 px-5 w-full shadow-[0_0_10px_rgba(121,116,208,1)]">
          <div className="flex flex-row items-center gap-2 drop-shadow-[0_0_5px_rgba(255,255,255,1)] hover:drop-shadow-none transition-all cursor-pointer">
             <img src='history.svg' alt="Upload icon" className="w-5 opacity-80 " />
             <p onClick={() => router.push("/history")}>

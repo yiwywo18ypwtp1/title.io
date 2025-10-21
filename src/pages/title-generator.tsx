@@ -6,7 +6,7 @@ import Result from "../components/Result";
 import { AnimatePresence, motion } from "framer-motion";
 
 
-export default function Home() {
+export default function TitleGenerator() {
    const [isGenerated, setIsGenerated] = useState(false);
    const [titleResult, setTitleResult] = useState<string[]>([]);
 
@@ -30,7 +30,7 @@ export default function Home() {
             />
 
             <div className="flex flex-col h-full w-full justify-center">
-               <AnimatePresence mode="wait">
+               <AnimatePresence mode="sync">
                   {!isGenerated ? (
                      <motion.div
                         key="form"

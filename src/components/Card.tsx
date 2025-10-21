@@ -25,6 +25,7 @@ const Card = ({ title, text, link }: { title: string; text: string, link: string
                 </div>
 
                 <button
+                    onClick={() => router.push(link)}
                     className="purple-btn rounded-full py-3 px-5 mb-4 absolute transition-all duration-500 ease-in-out"
                     style={{
                         left: "50%",
@@ -37,7 +38,6 @@ const Card = ({ title, text, link }: { title: string; text: string, link: string
                     }}
                 >
                     <div
-                        onClick={() => router.push(link)}
                         className="flex flex-row items-center justify-center gap-3"
                     >
                         Get started

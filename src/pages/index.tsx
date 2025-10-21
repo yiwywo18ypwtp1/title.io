@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Card from '@/components/Card'
+import { useRouter } from 'next/router'
 
 
 const WelcomePage = () => {
+    const router = useRouter();
     const [hovered, setHovered] = useState(false);
 
     return (
@@ -15,8 +17,18 @@ const WelcomePage = () => {
                     </div>
 
                     <div className="flex flex-row gap-3 items-center">
-                        <button className="text-lg rounded-full py-2 w-28 white-href hover:cursor-pointer">Log in</button>
-                        <button className="text-lg border-1 rounded-full py-2 w-28 purple-br purple-sh purple-btn-empty">Sign up</button>
+                        <button
+                            onClick={() => router.push("/login")}
+                            className="text-lg rounded-full py-2 w-28 white-href hover:cursor-pointer"
+                        >
+                            Log in
+                        </button>
+                        <button
+                            onClick={() => router.push("/signup")}
+                            className="text-lg border-1 rounded-full py-2 w-28 purple-br purple-sh purple-btn-empty"
+                        >
+                            Sign up
+                        </button>
                     </div>
                 </header>
 
