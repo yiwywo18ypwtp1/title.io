@@ -172,6 +172,7 @@ body {
 
 .purple-btn {
   background-color: var(--purple);
+  transition: all 300ms;
 
   &:hover {
     background-color: var(--purple);

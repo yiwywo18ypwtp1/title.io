@@ -5,8 +5,8 @@ import { UserProvider } from '@/contexts/Context';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-     <UserProvider>
-       <Component {...pageProps} />
-     </UserProvider>
+    <UserProvider>
+      <Component {...pageProps} />
+    </UserProvider>
   );
 }

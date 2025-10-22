@@ -62,14 +62,14 @@ const Header: FC<HeaderProps> = ({ onReset, resetTextInput }) => {
                <>
                   <a
                      className="text-shadow-[0_0_10px_rgb(255_255_255_/1)] cursor-pointer hover:text-shadow-none transition-all"
-                     onClick={() => router.push("/signup")}
+                     onClick={() => router.push("/join?action=signup")}
                   >
                      Sign up
                   </a>
                   <p className="text-shadow-[0_0_10px_rgb(255_255_255_/1)]">|</p>
                   <a
                      className="text-shadow-[0_0_10px_rgb(255_255_255_/1)] cursor-pointer hover:text-shadow-none transition-all"
-                     onClick={() => router.push("/login")}
+                     onClick={() => router.push("/join?action=login")}
                   >
                      Log in
                   </a>

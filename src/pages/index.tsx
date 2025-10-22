@@ -18,13 +18,13 @@ const WelcomePage = () => {
 
                     <div className="flex flex-row gap-3 items-center">
                         <button
-                            onClick={() => router.push("/login")}
+                            onClick={() => router.push("/join?action=login")}
                             className="text-lg rounded-full py-2 w-28 white-href hover:cursor-pointer"
                         >
                             Log in
                         </button>
                         <button
-                            onClick={() => router.push("/signup")}
+                            onClick={() => router.push("/join?action=signup")}
                             className="text-lg border-1 rounded-full py-2 w-28 purple-br purple-sh purple-btn-empty"
                         >
                             Sign up
