@@ -1,36 +1,34 @@
 import React, { useState } from "react";
 import GenerateForm from "@/components/GenerateForm";
-import Header from "../components/Header";
 import Head from 'next/head';
 import Result from "../components/Result";
 import { AnimatePresence, motion } from "framer-motion";
 
 
-export default function TitleGenerator() {
+const TitleGenerator = () => {
    const [isGenerated, setIsGenerated] = useState(false);
    const [titleResult, setTitleResult] = useState<string[]>([]);
 
    const [textInput, setTextInput] = useState<string | null>(null);
    const [titleLength, setTitleLength] = useState<string>("");
 
+   const handleReset = () => {
+      setIsGenerated(false);
+      setTitleResult([]);
+      setTextInput(null);
+      setTitleLength("");
+   }
+
    return (
       <>
          <Head>
-            <title>title.io</title>
+            <title>title.io | Title generator</title>
             <link rel="icon" href="/logo.ico" />
          </Head>
 
-         <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20 font-audiolink">
-            <Header
-               onReset={() => {
-                  setIsGenerated(false);
-                  setTitleLength("");
-               }}
-               resetTextInput={() => setTextInput(null)}
-            />
-
+         <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20">
             <div className="flex flex-col h-full w-full justify-center">
-               <AnimatePresence mode="sync">
+               <AnimatePresence mode="wait">
                   {!isGenerated ? (
                      <motion.div
                         key="form"
@@ -63,6 +61,7 @@ export default function TitleGenerator() {
                            textInput={textInput}
                            titleLength={titleLength}
                            setTitleResult={setTitleResult}
+                           handleReset={handleReset}
                         />
                      </motion.div>
                   )}
@@ -72,3 +71,5 @@ export default function TitleGenerator() {
       </>
    );
 }
+
+export default TitleGenerator;

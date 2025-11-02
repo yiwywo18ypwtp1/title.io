@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useAlert } from '@/contexts/AlertContext';
 import axios from "axios";
 import type { FC } from 'react';
 
@@ -13,7 +14,8 @@ type GenerateFormProps = {
 };
 
 const GenerateForm: FC<GenerateFormProps> = ({ setIsGenerated, setTitleResult, setTextInput, setTitleLength, textInput, titleLength }) => {
-   const [error, setError] = useState<string | null>(null);
+   const { addAlert } = useAlert();
+
    const [charCount, setCharCount] = useState<number>(0);
    const [file, setFile] = useState<File | undefined | null>(null);
 
@@ -21,21 +23,19 @@ const GenerateForm: FC<GenerateFormProps> = ({ setIsGenerated, setTitleResult, s
 
    const handleSubmit = async () => {
       if (!textInput) {
-         setError("Please enter your text before generating");
+         addAlert("Please enter your text before generating", "error");
          return;
       }
 
       if (textInput.trim().length < 100) {
-         setError("The text must be more than 100");
+         addAlert("The text must be more than 100", "error");
          return;
       }
 
       if (!titleLength) {
-         setError("Choose the title length before generating");
+         addAlert("Choose the title length before generating", "error");
          return;
       }
-
-      setError(null);
 
       try {
          const res = await axios.post("/api/generateTitle", {
@@ -107,7 +107,6 @@ const GenerateForm: FC<GenerateFormProps> = ({ setIsGenerated, setTitleResult, s
                   type="file"
                   accept=".txt"
                   onChange={(e) => {
-                     setError(null);
                      const selectedFile = e.target.files?.[0];
                      if (selectedFile) {
                         setFile(selectedFile);
@@ -123,18 +122,13 @@ const GenerateForm: FC<GenerateFormProps> = ({ setIsGenerated, setTitleResult, s
                />
             </div>
 
-            {error ? (
-               <p className="text-red-400 text-m transition-opacity animate-pulse">{error}</p>
-            ) : (
-               <p className="text-[#89B4FA] text-m">or</p>
-            )}
+            <p className="text-[#89B4FA] text-m">or</p>
 
             <div className="relative w-full h-[50%]">
                <textarea
                   onChange={(e) => {
                      setTextInput(e.target.value);
                      setFile(null);
-                     setError(null);
                   }}
                   className={`custom-scroll box-border w-full h-full bg-violet-300/30 py-3 px-4 rounded-sm resize-none text-[#89B4FA] ${textInput ? 'placeholder:text-left' : 'placeholder:text-center'} focus:outline-1 outline-[#89B4FA] focus:shadow-[0_0_7px_rgba(137,180,250,1)] focus:placeholder-transparent transition-all`}
                   rows={1}
@@ -154,7 +148,7 @@ const GenerateForm: FC<GenerateFormProps> = ({ setIsGenerated, setTitleResult, s
                <select
                   value={titleLength}
                   onChange={(e) => setTitleLength(e.target.value)}
-                  className=" appearance-none centred-select border-1 border-[#7974d0] w-1/2 self-end min-h-[2.5rem] rounded-sm rounded-bl-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] hover:text-shadow-[0_0_5px_rgb(255_255_255/_1)] text-center focus:outline-none"
+                  className="appearance-none centred-select text-lg border-1 border-[#7974d0] w-1/2 self-end min-h-10 rounded-sm rounded-bl-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] hover:text-shadow-[0_0_5px_rgb(255_255_255/_1)] text-center focus:outline-none"
                >
                   <option
                      hidden
@@ -169,10 +163,10 @@ const GenerateForm: FC<GenerateFormProps> = ({ setIsGenerated, setTitleResult, s
                </select>
                <button
                   onClick={handleSubmit}
-                  className="bg-[#7974d0] w-1/2 self-end min-h-[2.5rem]
+                  className="bg-[#7974d0] text-lg w-1/2 self-end min-h-10
                      rounded-sm rounded-br-2xl h-full cursor-pointer transition-all hover:w-[85%] hover:shadow-[0_0_15px_rgba(121,116,208,1)] text-shadow-[0_0_5px_rgb(255_255_255/_1)] hover:text-shadow-none"
                >
-                  Generate!
+                  Generate
                </button>
             </div>
          </div>

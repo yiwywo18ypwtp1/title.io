@@ -22,6 +22,20 @@
   --color-foreground: var(--foreground);
   --font-sans: 'AudioLink Mono', sans-serif;
   --font-mono: 'AudioLink Mono', monospace;
+
+  --color-prl: #7974D0;
+  --color-pnk: #CBA6F7;
+  --color-blu: #89B4FA;
+
+  --shadow-prl-glw: 0 0 15px #7974D0;
+  --shadow-pnk-glw: 0 0 15px #CBA6F7;
+  --shadow-blu-glw: 0 0 15px #89B4FA;
+  --shadow-wht-glw: 0 0 10px rgba(255, 255, 255, 0.5);
+
+  --text-shadow-prl: 0 0 10px #7974D0;
+  --text-shadow-pnk: 0 0 10px #CBA6F7;
+  --text-shadow-blu: 0 0 10px #89B4FA;
+  --text-shadow-wht: 0 0 5px rgba(255, 255, 255, 1);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,12 +56,16 @@ body {
   cursor: default;
 }
 
+.custom-scroll {
+  scrollbar-gutter: stable;
+}
+
 .custom-scroll::-webkit-scrollbar {
   width: 0.7rem;
 }
 
 .custom-scroll::-webkit-scrollbar-track {
-  background: rgba(137, 180, 250, 0.1);
+  background: rgba(254, 78, 78, 0.1);
   border-radius: 0.5rem;
 }
 
@@ -61,6 +79,11 @@ body {
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background-color: rgba(137, 180, 250, 0.7);
 }
+
+.clip-rounded {
+  clip-path: inset(0 round 1.5rem);
+}
+
 
 @keyframes gradientShift {
   0% {
@@ -81,6 +104,12 @@ body {
   flex-direction: column;
   align-items: center;
   height: 100dvh;
+}
+
+.smooth-slide {
+  transition-property: opacity, transform;
+  transition-duration: 500ms, 500ms;
+  transition-timing-function: ease-in-out;
 }
 
 .bg-img {
@@ -104,8 +133,14 @@ body {
   text-shadow: 0 0 10px #fff;
 }
 
+.txt-sh-white-hover {
+  &:hover {
+    text-shadow: 0 0 10px #fff;
+  }
+}
+
 .drp-white {
-  filter: drop-shadow(0 0 10px #fff)
+  filter: drop-shadow(0 0 5px #fff)
 }
 
 /* PINK */
@@ -158,12 +193,18 @@ body {
   box-shadow: 0 0 10px var(--purple);
 }
 
+.purple-sh-hover {
+  &:hover {
+    box-shadow: 0 0 10px var(--purple);
+  }
+}
+
 .purple-txt-sh {
   text-shadow: 0 0 15px var(--purple);
 }
 
 .purple-br {
-  border-color: var(--purple);
+  border: 1px solid var(--purple);
 }
 
 .purple-bg {
@@ -172,6 +213,7 @@ body {
 
 .purple-btn {
   background-color: var(--purple);
+  border: 1px solid var(--purple);
   transition: all 300ms;
 
   &:hover {
@@ -184,6 +226,7 @@ body {
 
 .purple-btn-empty {
   background-color: none;
+  border: 1px solid var(--purple);
   transition: all 300ms;
 
   &:hover {
@@ -195,8 +238,55 @@ body {
 
 
 /* BLUE */
+.blue-txt {
+  color: var(--blue);
+}
+
 .blue-sh {
   box-shadow: 0 0 10px var(--blue);
+}
+
+.blue-sh-hover {
+  &:hover {
+    box-shadow: 0 0 10px var(--blue);
+  }
+}
+
+.blue-txt-sh {
+  text-shadow: 0 0 15px var(--blue);
+}
+
+.blue-br {
+  border: 1px solid var(--blue);
+}
+
+.blue-bg {
+  background-color: var(--blue);
+}
+
+.blue-btn {
+  background-color: var(--blue);
+  border: 1px solid var(--blue);
+  transition: all 300ms;
+
+  &:hover {
+    background-color: var(--blue);
+    box-shadow: 0 0 10px var(--blue);
+    text-shadow: 0 0 10px #fff;
+    cursor: pointer;
+  }
+}
+
+.blue-btn-empty {
+  background-color: none;
+  border: 1px solid var(--blue);
+  transition: all 300ms;
+
+  &:hover {
+    background-color: var(--purple);
+    text-shadow: 0 0 10px #fff;
+    cursor: pointer;
+  }
 }
 
 /*  */
@@ -231,7 +321,7 @@ body {
   border-radius: 1.5rem;
   inset: -5px;
   background: linear-gradient(to bottom,
-      rgba(182, 132, 248, .9) 0%,
+      rgba(154, 68, 204, 0.9) 0%,
       rgba(203, 166, 247, .4) 30%,
       rgba(100, 94, 215, .4) 70%,
       rgba(99, 92, 237, .9) 100%);

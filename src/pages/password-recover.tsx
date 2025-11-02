@@ -1,6 +1,5 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Head from 'next/head';
-import Header from "@/components/Header";
 
 
 export default function Signup() {
@@ -11,11 +10,9 @@ export default function Signup() {
       <>
          <Head>
             <title>title.io | Sign up</title>
-            <link rel="icon" href="/logo.ico"/>
+            <link rel="icon" href="/logo.ico" />
          </Head>
          <main className="main bg-gradient-to-br from-indigo-400/20 to-purple-400/20">
-            <Header/>
-
             <div className="flex flex-col justify-center items-center h-full w-full">
                <form className="flex flex-col justify-between items-center w-[25%] p-10 rounded-3xl border-1 border-[#89B4FA] bg-[#1E1E2E]/35 gap-10">
                   <input
